@@ -47,15 +47,15 @@ def getTablesDateStartEnd(table, startDate, endDate):
 
 
 c = getTables('A')
-print(c)
+# print(c)
 result3 = collection_tableA.insert_many(c)
 
 d = getTables('B')
-print(d)
+# print(d)
 result4 = collection_tableB.insert_many(d)
 
 e = getTables('C')
-print(e)
+# print(e)
 result5 = collection_tableC.insert_many(e)
 
 
@@ -64,3 +64,17 @@ result5 = collection_tableC.insert_many(e)
 
 # data, cena = getRates('A', 'chf')
 # print(data, cena)
+database = client['nbp']
+table_A = database['tableA']
+rates = table_A.find({}, {'rates': True})
+
+lista_walut = []
+for rate in rates:
+    lista_walut.append(rate['rates'])
+
+
+waluty = lista_walut[0]
+for waluta in waluty:
+    print(str(waluta['currency'])+" "+str(waluta['code'])+" "+str(waluta['mid']))
+
+
