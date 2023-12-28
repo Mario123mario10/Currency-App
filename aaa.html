@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+/**
+* HTML document with head and body.
+* The head contains meta info, title, and script import.
+* The body contains a form, buttons, paragraph for output,
+* and button with onclick handler to show message.
+*/
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <script src="aaa.js">
+    </script>
+    <script src="baza_danych.py"></script>
+</head>
+
+<body>
+    <form action>
+        Tekst:
+        <input type="text" id="userNumber">
+    </form>
+    <input type="submit">
+    Wybierz
+    </input>
+
+    <p id="message"></p>
+    <input type="submit" onclick="showMessage()">Wyświetl tekst</input>
+    <button onclick="runPythonScript()">Run Python Script</button>
+    <!-- <input type="button" id='script' name="scriptbutton" value=" Run Script " onclick="exec('python 3 ./baza_danych.py');"> -->
+</body>
+
+</html>
+
+</html>
