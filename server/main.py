@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_pymongo import PyMongo
 import requests
+from flask_cors import cross_origin
 
 app = Flask(__name__)
 app.config["MONGO_URI"] = "mongodb://localhost:27017/myDatabase"
@@ -14,6 +15,7 @@ def hello_world():
     return f"<p>Hello, World! tescik:</p>"
 
 @app.route("/waluta")
+@cross_origin()
 def test_usd():
     header = {'Accept': 'application/json'}
     url="http://api.nbp.pl/api/exchangerates/rates/a/usd/"
