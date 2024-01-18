@@ -20,16 +20,20 @@ def hello_world():
 @app.route("/currency/<currency>")
 @cross_origin()
 def get_currency(currency):
-    header = {'Accept': 'application/json'}
-    url=f"http://api.nbp.pl/api/exchangerates/rates/a/{currency}/"
-    response = requests.get(url, headers=header).content.decode('UTF-8')
-    todays_usd = ast.literal_eval(response)
+    # header = {'Accept': 'application/json'}
+    # url=f"http://api.nbp.pl/api/exchangerates/rates/a/{currency}/"
+    # response = requests.get(url, headers=header).content.decode('UTF-8')
+    # todays_usd = ast.literal_eval(response)
     database = client['nbp']
-    tableA = database['tableA']
-    aa = tableA.find({"code": currency})
-    for i in aa:
+    kurs_sredni = database['kursy_srednie']
+    dane = kurs_sredni.find({"code": currency})
+    for i in dane:
         print(i)
-    return str(i)
+        value = i["mid"]
+        name = i["currency"]
+        code = i["code"]
+
+    return f'Nazwa waluty: {name} Skrót: {code} Średnia wartość:{value}'
 
 @app.route("/currencies_names")
 @cross_origin()
