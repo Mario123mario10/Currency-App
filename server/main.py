@@ -10,20 +10,18 @@ app.config["MONGO_URI"] = "mongodb://localhost:27017/nbp"
 client = MongoClient("localhost", 27017)
 mongo = PyMongo(app)
 
-@app.route("/")
-def hello_world():
-    mongo.db.tescik.insert_one({"testowa_wartosc":3})
-    a = mongo.db.tescik.find({})
-    print(a[1]["testowa_wartosc"])
-    return f"<p>Hello, World! tescik:</p>"
-
 @app.route("/currency/<currency>")
 @cross_origin()
 def get_currency(currency):
-    # header = {'Accept': 'application/json'}
-    # url=f"http://api.nbp.pl/api/exchangerates/rates/a/{currency}/"
-    # response = requests.get(url, headers=header).content.decode('UTF-8')
-    # todays_usd = ast.literal_eval(response)
+    header = {'Accept': 'application/json'}
+    url=f"http://api.nbp.pl/api/exchangerates/rates/a/{currency}/"
+    response = requests.get(url, headers=header).content.decode('UTF-8')
+    currency_price = ast.literal_eval(response)
+    return currency_price
+
+@app.route("/currency_db/<currency>")
+@cross_origin()
+def get_currency_db(currency):
     database = client['nbp']
     kurs_sredni = database['kursy_srednie']
     dane = kurs_sredni.find({"code": currency})
@@ -50,6 +48,11 @@ def currencies_json():
         rates = ast.literal_eval(currencies_json)[0]['rates']
     except:
         rates = "Brak danych"
+    return rates
+
+@app.route("/currencies_json_db")
+@cross_origin()
+def currencies_json_db():
     database = client['nbp']
     tableA = database['tableA']
     aa = tableA.find({"code": "USD"})
