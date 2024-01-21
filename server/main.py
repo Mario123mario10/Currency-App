@@ -8,7 +8,7 @@ from pymongo import MongoClient
 app = Flask(__name__)
 app.config["MONGO_URI"] = "mongodb://localhost:27017/nbp"
 client = MongoClient("localhost", 27017)
-mongo = PyMongo(app)
+mongo = PyMongo(app).db
 
 @app.route("/currency/<currency>")
 @cross_origin()
@@ -53,9 +53,10 @@ def currencies_json():
 @app.route("/currencies_json_db")
 @cross_origin()
 def currencies_json_db():
-    database = client['nbp']
-    tableA = database['tableA']
+    #database = client['nbp']
+    tableA = mongo['tableA']
     aa = tableA.find({"code": "USD"})
+    print(aa)
     for i in aa:
         print(i)
     return str(i)
