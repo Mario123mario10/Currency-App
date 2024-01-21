@@ -1,5 +1,6 @@
 'use client';
 import React, {useState, useEffect} from "react";
+import { Chart } from "chart.js";
 import CONSTANTS from "../properties"
 
 export default function Test() {
@@ -35,6 +36,24 @@ export default function Test() {
         .then(data => setTransferCurrencyPrice(data.rates[0].mid))
     }, [transfer_currency]);
 
+    //tworzy wykres
+    useEffect(() => {
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [main_currency, transfer_currency],
+                datasets: [{
+                    data: [main_currency_price, transfer_currency_price],
+                    label: "Cena w PLN",
+                    borderColor: "rgb(109, 253, 181)",
+                    backgroundColor: "rgb(109, 253, 181,0.5)",
+                    borderWidth: 2
+                }
+                ]
+            },
+        });
+    }, [transfer_currency_price, main_currency_price])
 
     const requestPrice = (currency_name) => {
         return fetch(CONSTANTS.domain + "/currency/" + currency_name.toLowerCase())
@@ -109,9 +128,12 @@ export default function Test() {
                 ))}
             </select>
         </div>
-        <h1>1 {main_currency} do {transfer_currency} wynosi {price}</h1>
-        <h1>Pierwsza waluta {main_currency} kurs w stosunku do PLN- {main_currency_price} </h1>
-        <h1>Druga waluta {transfer_currency} kurs w stosunku do PLN- {transfer_currency_price}</h1>
+        <h1 className="w-[250px] mx-auto mt-10 text-xl font-semibold capitalize ">1 {main_currency} do {transfer_currency} wynosi {price}</h1>
+            <div className="w-[1100px] h-screen flex mx-auto">
+                <div className='border border-gray-400 pt-0 rounded-xl  w-full h-fit shadow-xl'>
+                    <canvas id='myChart'></canvas>
+                </div>
+            </div>
       </main>
             )
         }
