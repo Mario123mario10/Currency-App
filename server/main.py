@@ -4,6 +4,9 @@ import requests
 from flask_cors import cross_origin
 import ast
 from pymongo import MongoClient
+import subprocess
+
+subprocess.run(['python3', 'server/baza_danych.py'])
 
 app = Flask(__name__)
 app.config["MONGO_URI"] = "mongodb://localhost:27017/nbp"
