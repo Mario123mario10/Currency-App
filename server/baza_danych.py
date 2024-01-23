@@ -4,12 +4,14 @@ from pymongo import MongoClient
 
 client = MongoClient("localhost", 27017)
 client.drop_database("nbp")
+print("Aktualizacja bazy danych...")
 db = client.nbp
 collection_zloto = db.zloto
 collection_rate = db.rate
 collection_kursy_srednie = db.kursy_srednie
 # collection_tableB = db.tableB
 collection_kursy_kup_sprzedaz = db.kursy_kup_sprzedaz
+collection_zloto = db.zloto
 
 
 urls = {
@@ -47,11 +49,6 @@ def getCenazlotaDateStartEnd(startDate, endDate):
 
 
 
-# cena_zlota = getCenazlota()
-# # print(a)
-# result = collection_zloto.insert_one(cena_zlota)
-
-
 
 tableA = getTables('A')
 tableB = getTables('B')
@@ -64,6 +61,9 @@ result2 = collection_kursy_srednie.insert_many(tableB[0]['rates'])
 
 kursy_kup_sprzedaz = getTables('C')
 result3 = collection_kursy_kup_sprzedaz.insert_many(kursy_kup_sprzedaz[0]['rates'])
+
+cena_zlota = getCenazlota()
+result = collection_zloto.insert_one(cena_zlota[0])
 
 
 # data, cena = getCenazlota()
