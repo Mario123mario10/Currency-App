@@ -10,8 +10,9 @@ def create_app():
     with app.app_context():
         init_app(app)
 
-    app.register_blueprint(requests_apis)
     app.register_blueprint(db_data)
+    app.register_blueprint(requests_apis)
+
 
 
     return app

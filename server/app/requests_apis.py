@@ -26,7 +26,14 @@ def get_currency_period(currency,start_date,end_date):
 @requests_apis.route("/currencies_names")
 @cross_origin()
 def get_currencies_names():
-    return
+    header = {'Accept': 'application/json'}
+    url="http://api.nbp.pl/api/exchangerates/tables/a"
+    currencies_json = requests.get(url, headers=header).content.decode('UTF-8')
+    currencies = ast.literal_eval(currencies_json)[0]['rates']
+    names = []
+    for currency in currencies:
+        names.append(currency["code"])
+    return names
 
 @requests_apis.route("/currencies_json")
 @cross_origin()

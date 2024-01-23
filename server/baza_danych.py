@@ -10,6 +10,7 @@ collection_rate = db.rate
 collection_kursy_srednie = db.kursy_srednie
 # collection_tableB = db.tableB
 collection_kursy_kup_sprzedaz = db.kursy_kup_sprzedaz
+collection_currencies_names = db.nazwy_walut
 
 
 urls = {
@@ -34,6 +35,13 @@ def getTables(table):
     r = requests.get(urls['tables'].format(table=table)).json()
     return r
 
+def getNames():
+    names =[{"code":"THB"}, {"code":"USD"}, {"code":"AUD"}, {"code":"HKD"}, {"code":"CAD"}, {"code":"NZD"}, {"code":"SGD"},
+            {"code":"EUR"}, {"code":"HUF"}, {"code":"CHF"}, {"code":"GBP"}, {"code":"UAH"}, {"code":"JPY"}, {"code":"CZK"},
+            {"code":"DKK"}, {"code":"ISK"}, {"code":"NOK"}, {"code":"SEK"}, {"code":"RON"}, {"code":"BGN"}, {"code":"TRY"},
+            {"code":"ILS"}, {"code":"CLP"}, {"code":"PHP"}, {"code":"MXN"}, {"code":"ZAR"}, {"code":"BRL"}, {"code":"MYR"},
+            {"code":"IDR"}, {"code":"INR"}, {"code":"KRW"}, {"code":"CNY"}, {"code":"XDR"}]
+    return names
 
 
 # te dwie funkcje mozna przenieśc do serwera i dla konkretnych dat sciagac dane bezposrednio z API
@@ -65,7 +73,8 @@ result2 = collection_kursy_srednie.insert_many(tableB[0]['rates'])
 kursy_kup_sprzedaz = getTables('C')
 result3 = collection_kursy_kup_sprzedaz.insert_many(kursy_kup_sprzedaz[0]['rates'])
 
-
+nazwy = getNames()
+result4 = collection_currencies_names.insert_many(nazwy)
 # data, cena = getCenazlota()
 # print(data, cena)
 

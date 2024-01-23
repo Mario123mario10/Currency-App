@@ -15,6 +15,7 @@ export default function Test() {
     //wykonuje funkcję tylko raz przy załadowaniu strony
     useEffect(() => {
         requestCurrencies();
+        requestSinglePrice();
       }, []);
 
     //wykonuje za każdym razem jak zmieni się wartość zmiennej main_currency
@@ -27,6 +28,7 @@ export default function Test() {
         else{
             setMainCurrencyPrice("1.00")
         }
+        requestSinglePrice();
       }, [main_currency]);
 
     //wykonuje za każdym razem jak zmieni się wartość zmiennej transfer_currency
@@ -34,6 +36,7 @@ export default function Test() {
         fetch(CONSTANTS.domain + "/currency/" + transfer_currency.toLowerCase())
         .then(response => response.json())
         .then(data => setTransferCurrencyPrice(data.rates[0].mid))
+        requestSinglePrice();
     }, [transfer_currency]);
 
     //tworzy wykres
@@ -51,6 +54,17 @@ export default function Test() {
                     borderWidth: 2
                 }
                 ]
+            },
+            options: {
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    min : 0
+                  }
+                },
+                interaction: {
+                    intersect: false
+                }
             },
         });
     }, [transfer_currency_price, main_currency_price])
@@ -72,7 +86,7 @@ export default function Test() {
             .then(result => {
                 return result
             })
-        setPrice(Number(first_price)/Number(second_price));
+        setPrice((Number(first_price)/Number(second_price)).toFixed(4));
     }
 
     const requestCurrencies = () => {
@@ -101,11 +115,6 @@ export default function Test() {
     return (
         <main className="flex min-h-screen flex-col items-center justify-between p-24">
         <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-            <button
-            onClick={requestSinglePrice}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Sprawdź
-            </button>
             <select
             id="main_currency"
             value={main_currency}
@@ -117,6 +126,7 @@ export default function Test() {
                 </option>
                 ))}
             </select>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <select id="currency_to_transfer"
             value={transfer_currency}
             onChange={handleTransferCurrencyChange}
@@ -128,9 +138,10 @@ export default function Test() {
                 ))}
             </select>
         </div>
-        <h1 className="w-[250px] mx-auto mt-10 text-xl font-semibold capitalize ">1 {main_currency} do {transfer_currency} wynosi {price}</h1>
-            <div className="w-[1100px] h-screen flex mx-auto">
-                <div className='border border-gray-400 pt-0 rounded-xl  w-full h-fit shadow-xl'>
+        {/* Bar chart */}
+        <h1 className="w-[400px] mx-auto mt-10 text-xl font-semibold capitalize ">1 {main_currency} do {transfer_currency} wynosi {price}</h1>
+            <div className="w-[1100px]">
+                <div className='border border-gray-400 pt-0 rounded-xl  w-full h-fit my-auto '>
                     <canvas id='myChart'></canvas>
                 </div>
             </div>
