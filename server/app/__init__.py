@@ -2,8 +2,10 @@ from flask import Flask
 from .requests_apis import requests_apis
 from .db_data import db_data
 from .db import init_app
+import subprocess
 
 def create_app():
+    subprocess.run(['python3', 'baza_danych.py'])
     app = Flask(__name__)
     app.config["MONGO_URI"] = "mongodb://localhost:27017/nbp"
 
