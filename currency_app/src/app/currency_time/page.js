@@ -2,6 +2,7 @@
 import React, {useState, useEffect} from "react";
 import { Chart } from "chart.js";
 import CONSTANTS from "../properties"
+
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -17,7 +18,6 @@ export default function Test() {
     const [start_date, setStartDate] = useState(new Date("2023-01-01"));
     const [end_date, setEndDate] = useState(new Date("2024-01-01"));
     const [chart_data, setChartData] = useState({labels: [], data: []});
-
 
 
     //wykonuje funkcję tylko raz przy załadowaniu strony
@@ -86,6 +86,7 @@ export default function Test() {
         //alert(chart_data.data)
         return () => {myChart.destroy();};
     },[chart_data]);
+
 
     // tworzenie listy wszystkich walut
     const requestCurrencies = () => {
@@ -210,4 +211,5 @@ export default function Test() {
 //<ReactDatePicker selected={end_date}/>
 
 //onSelect={handlerStartDateChange}
+//onSelect={handlerEndDateChange}
 //onSelect={handlerEndDateChange}

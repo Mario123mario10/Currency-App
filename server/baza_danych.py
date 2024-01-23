@@ -12,6 +12,7 @@ collection_kursy_srednie = db.kursy_srednie
 collection_kursy_kup_sprzedaz = db.kursy_kup_sprzedaz
 collection_currencies_names = db.nazwy_walut
 
+# collection_historia_kursow = db.historia_kursow
 
 urls = {
 
