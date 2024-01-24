@@ -8,11 +8,9 @@ db = client.nbp
 collection_zloto = db.zloto
 collection_rate = db.rate
 collection_kursy_srednie = db.kursy_srednie
-# collection_tableB = db.tableB
 collection_kursy_kup_sprzedaz = db.kursy_kup_sprzedaz
 collection_currencies_names = db.nazwy_walut
 
-# collection_historia_kursow = db.historia_kursow
 
 urls = {
 
@@ -44,8 +42,6 @@ def getNames():
             {"code":"IDR"}, {"code":"INR"}, {"code":"KRW"}, {"code":"CNY"}, {"code":"XDR"}]
     return names
 
-
-# te dwie funkcje mozna przenieśc do serwera i dla konkretnych dat sciagac dane bezposrednio z API
 def getTablesDateStartEnd(table, startDate, endDate):
     r = requests.get(urls['tables_date_start_end'].format(table=table, startDate=startDate, endDate=endDate)).json()
     return r
@@ -55,43 +51,20 @@ def getCenazlotaDateStartEnd(startDate, endDate):
     return r
 
 
-
-# cena_zlota = getCenazlota()
-# # print(a)
-# result = collection_zloto.insert_one(cena_zlota)
-
-
-
 tableA = getTables('A')
 tableB = getTables('B')
 
 result1 = collection_kursy_srednie.insert_many(tableA[0]['rates'])
 result2 = collection_kursy_srednie.insert_many(tableB[0]['rates'])
 
-# tableB = getTables('B')
-# result2 = collection_tableB.insert_many(tableB[0]['rates'])
-
 kursy_kup_sprzedaz = getTables('C')
 result3 = collection_kursy_kup_sprzedaz.insert_many(kursy_kup_sprzedaz[0]['rates'])
 
+cena_zlota = getCenazlota()
+result = collection_zloto.insert_one(cena_zlota[0])
+
 nazwy = getNames()
 result4 = collection_currencies_names.insert_many(nazwy)
-# data, cena = getCenazlota()
-# print(data, cena)
 
-# data, cena = getRates('A', 'chf')
-# print(data, cena)
-# database = client['nbp']
-# table_A = database['kursy_srednie']
-# rates = table_A.find({}, {'rates': True})
-
-# lista_walut = []
-# for rate in rates:
-#     lista_walut.append(rate['rates'])
-
-
-# waluty = lista_walut[0]
-# for waluta in waluty:
-#     print(str(waluta['currency'])+" "+str(waluta['code'])+" "+str(waluta['mid']))
 
 
